@@ -1,14 +1,17 @@
 from myTurtle_A import *
 from myColor import *
-from mondrian_color import *
 import turtle
-import random
+
+from mondrian_color import *
+from recursive_mondrian import *
 
 t = MyTurtle_A()
 t.speed(0)
 tracer(1)
 delay(0)
 
-# todo
+t.width(5)
+
+recursive_mondrian(t, 400, 400, -200, -200)
 
 turtle.done()
