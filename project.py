@@ -11,6 +11,7 @@ tracer(1)
 delay(0)
 
 t.width(5)
+t.color(mondrian_black())
 
 recursive_mondrian_filling(t, 400, 400, -200, -200, True)
 

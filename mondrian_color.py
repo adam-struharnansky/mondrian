@@ -16,3 +16,11 @@ def mondrian_yellow():
 
 def mondrian_random():
     return [mondrian_yellow(), mondrian_blue(), mondrian_red()][random.randrange(0, 3)]
+
+
+def mondrian_white():
+    return MyColor(249, 249, 249)
+
+
+def mondrian_black():
+    return MyColor(23, 18, 17)

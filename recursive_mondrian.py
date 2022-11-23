@@ -13,9 +13,9 @@ def recursive_mondrian(t, width, height, x, y):
     t.jump_to(x, y)
     t.setheading(90)
     if rr(0, WHITE_TO_COLOR_RATIO):
-        t.rectangle(height, width, MyColor('black'), MyColor('white'))
+        t.rectangle(height, width, mondrian_black(), mondrian_white())
     else:
-        t.rectangle(height, width, MyColor('black'), mondrian_random())
+        t.rectangle(height, width, mondrian_black(), mondrian_random())
 
     if width < MIN_SIZE or height < MIN_SIZE:
         return
@@ -40,9 +40,9 @@ def recursive_mondrian_filling(t, width, height, x, y, fill):
     new_fill = fill
     if fill:
         if rr(0, WHITE_TO_COLOR_RATIO) or not fill:
-            t.rectangle(height, width, MyColor('black'), MyColor('white'))
+            t.rectangle(height, width, mondrian_black(), mondrian_white())
         else:
-            t.rectangle(height, width, MyColor('black'), mondrian_random())
+            t.rectangle(height, width, mondrian_black(), mondrian_random())
             if width < 2.5 * MIN_SIZE or height < 2.5 * MIN_SIZE:
                 new_fill = random_bool(FILL_STOP_RATIO)
 
