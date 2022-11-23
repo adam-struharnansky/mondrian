@@ -69,14 +69,12 @@ def advanced_chunk_mondrian(t, a, b, x, y, depth=4, counter=0):
 
     t.jump_to(x, y)
 
-    print(counter, a, b)
     if a - MIN_SIZE < MIN_SIZE or b - MIN_SIZE < MIN_SIZE:
         t.rectangle(a, b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
         return
 
     r = random.randint(0, 2)
     if counter == 0:
-        print("Change", r)
         r = 0
 
     if r != 1:
