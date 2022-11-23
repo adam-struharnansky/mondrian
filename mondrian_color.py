@@ -1,4 +1,5 @@
 from myColor import *
+import random
 
 
 def mondrian_red():
@@ -14,4 +15,4 @@ def mondrian_yellow():
 
 
 def mondrian_random():
-    return [mondrain_yellow(), mondrain_blue(), mondrain_red()][random.randrange(0, 3)]
+    return [mondrian_yellow(), mondrian_blue(), mondrian_red()][random.randrange(0, 3)]
