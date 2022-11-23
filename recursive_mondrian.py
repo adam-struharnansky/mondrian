@@ -60,3 +60,38 @@ def recursive_mondrian_filling(t, width, height, x, y, fill):
         t.fd(width)
         recursive_mondrian_filling(t, width, b, x, y, new_fill)
         recursive_mondrian_filling(t, width, height - b, x, y + b, new_fill)
+
+
+def advanced_chunk_mondrian(t, a, b, x, y, depth=4, counter=0):
+    MIN_SIZE = 30
+    if counter == depth:
+        return
+
+    t.jump_to(x, y)
+
+    print(counter, a, b)
+    if a - MIN_SIZE < MIN_SIZE or b - MIN_SIZE < MIN_SIZE:
+        t.rectangle(a, b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
+        return
+
+    r = random.randint(0, 2)
+    if counter == 0:
+        print("Change", r)
+        r = 0
+
+    if r != 1:
+        t.rectangle(a, b, mondrian_black(), mondrian_white())
+        newA = random.randint(MIN_SIZE, a - MIN_SIZE)
+        newB = random.randint(MIN_SIZE, b - MIN_SIZE)
+
+        if newA + int(newB/2) < newB:
+            newB -= int(newB/2)
+        elif newB + int(newA/2) < newA:
+            newA -= int(newA/2)
+
+        advanced_chunk_mondrian(t, newA, newB, x, y, depth, counter + 1)
+        advanced_chunk_mondrian(t, newA, b - newB, x + newB, y, depth, counter + 1)
+        advanced_chunk_mondrian(t, a - newA, b - newB, x + newB, y + newA, depth, counter + 1)
+        advanced_chunk_mondrian(t, a - newA, newB, x, y + newA, depth, counter + 1)
+    else:
+        t.rectangle(a, b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
