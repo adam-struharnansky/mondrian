@@ -12,6 +12,6 @@ delay(0)
 
 t.width(5)
 
-recursive_mondrian(t, 400, 400, -200, -200)
+recursive_mondrian_filling(t, 400, 400, -200, -200, True)
 
 turtle.done()
