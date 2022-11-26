@@ -4,12 +4,16 @@ import random
 LINE_WIDTH = 20
 
 
+def centred_square(t, x, y, side, rim_color, fill_color):
+    t.jump_to(x - side / 2, y + side / 2)
+    t.rectangle(side, side, rim_color, fill_color)
+
+
 def crossroads(t, x_coordinates, y_coordinates):
     for x in x_coordinates:
         for y in y_coordinates:
-            t.jump_to(x - LINE_WIDTH / 2, y + LINE_WIDTH / 2)
             color = mondrian_random_and_white()
-            t.rectangle(LINE_WIDTH, LINE_WIDTH, color, color)
+            centred_square(t, x, y, LINE_WIDTH, color, color)
 
 
 def lines(t, width, height, x, y, x_coordinates, y_coordinates):
@@ -39,6 +43,29 @@ def possible_new_element(min_value, max_value, previous):
     return new_element
 
 
+def squares(t, x, y, width, height, x_coordinates, y_coordinates):
+    # squares on vertical
+    for rect_x in x_coordinates:
+        rect_y = random.randrange(y, y + LINE_WIDTH)
+        y_squares = y_coordinates.copy()
+        while rect_y < y + height:
+            if check_element(rect_y, y_squares):
+                color = mondrian_random_and_white()
+                centred_square(t, rect_x, rect_y, LINE_WIDTH, color, color)
+                y_squares.append(rect_y)
+            rect_y += LINE_WIDTH / 5
+    # squares on horizontal
+    for rect_y in y_coordinates:
+        rect_x = random.randrange(x, x + LINE_WIDTH)
+        x_squares = x_coordinates.copy()
+        while rect_x < x + width:
+            if check_element(rect_x, x_squares):
+                color = mondrian_random_and_white()
+                centred_square(t, rect_x, rect_y, LINE_WIDTH, color, color)
+                x_squares.append(rect_x)
+            rect_x += LINE_WIDTH / 5
+
+
 def line_mondrian(t, width, height, x, y, rows_num, columns_num):
     x_coordinates = []
     y_coordinates = []
@@ -51,3 +78,4 @@ def line_mondrian(t, width, height, x, y, rows_num, columns_num):
 
     lines(t, width, height, x, y,  x_coordinates, y_coordinates)
     crossroads(t, x_coordinates, y_coordinates)
+    squares(t, x, y, width, height, x_coordinates, y_coordinates)
