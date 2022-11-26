@@ -24,3 +24,12 @@ def mondrian_white():
 
 def mondrian_black():
     return MyColor(23, 18, 17)
+
+
+def mondrian_random_and_white():
+    return [mondrian_yellow(), mondrian_red(), mondrian_blue(), mondrian_white()][random.randrange(0, 4)]
+
+
+def mondrian_random_all():
+    return [mondrian_yellow(), mondrian_white(), mondrian_blue(), mondrian_red(), mondrian_black()][
+        random.randrange(0, 5)]
