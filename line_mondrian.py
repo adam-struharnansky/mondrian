@@ -5,11 +5,28 @@ LINE_WIDTH = 20
 
 
 def centred_square(t, x, y, side, rim_color, fill_color):
+    """
+    Funkcia na vytvorenie stvorceka, ktoreho stred je na mieste x, y
+
+    :param t: Korytnacka
+    :param x: x-ova suradnica stredu stvorceka
+    :param y: y-ova suradnica stredu stvorceka
+    :param side: dlzka strany stvorceka
+    :param rim_color: farba ciary
+    :param fill_color: farba vyplne
+    """
     t.jump_to(x - side / 2, y + side / 2)
     t.rectangle(side, side, rim_color, fill_color)
 
 
 def crossroads(t, x_coordinates, y_coordinates):
+    """
+    Funkcia vykresli na krizovatkach stvorceky
+
+    :param t: Korytnacka
+    :param x_coordinates: horizontalne ciary
+    :param y_coordinates: verticalne ciary
+    """
     for x in x_coordinates:
         for y in y_coordinates:
             color = mondrian_random_and_white()
@@ -17,6 +34,13 @@ def crossroads(t, x_coordinates, y_coordinates):
 
 
 def rectangles(t, x_coordinates, y_coordinates):
+    """
+    Funkcia, ktora nahodne vykresli obdlznicky do medzier medzi ciarami
+
+    :param t: Koryntacka
+    :param x_coordinates: horizontalne ciary
+    :param y_coordinates: verticalne ciary
+    """
     for _ in range(len(x_coordinates)):
         x_str = random.randrange(1, len(x_coordinates) - 1)
         y_str = random.randrange(1, len(y_coordinates) - 1)
@@ -48,6 +72,17 @@ def rectangles(t, x_coordinates, y_coordinates):
 
 
 def lines(t, width, height, x, y, x_coordinates, y_coordinates):
+    """
+    Funkcia nakresli ciary
+
+    :param t: Korytnacka
+    :param width: sirka obrazku
+    :param height: vyska obrazku
+    :param x: x-ova suradnica laveho okraja obrazku
+    :param y: y-ova suradnica spodneho okraja obrazku
+    :param x_coordinates: horizontalne ciary
+    :param y_coordinates: vertikalne ciary
+    """
     t.setheading(90)
     for tmp_x in x_coordinates:
         t.jump_to(tmp_x, y)
@@ -59,6 +94,13 @@ def lines(t, width, height, x, y, x_coordinates, y_coordinates):
 
 
 def check_element(element, previous):
+    """
+    Funkcia overi, ci je dany element vzdialeny od kazdeho v zozname previou aspon o 2 * LINE_WIDTH
+
+    :param element: element, ktory je skumany
+    :param previous: list hodnot, pre ktory sa skusa, ako je daleko od neho element
+    :return: True - ak je od kazdeho aspon na vzdialenost 2 * LINE_WIDTH, False inak
+    """
     for p in previous:
         if abs(element - p) < 2 * LINE_WIDTH:
             return False
@@ -66,6 +108,14 @@ def check_element(element, previous):
 
 
 def possible_new_element(min_value, max_value, previous):
+    """
+    Funkcia ktora vrati element, ktory je vzdialeny od ostatnych v liste tak, aby splnal funkciu chech_element.
+
+    :param min_value: minimalna hodnota elementu
+    :param max_value: maximalna hodnota elementu
+    :param previous: list hodnot, s ktorymi sa bude novy element porovnavat
+    :return: objekt, pre ktory je pre kazdy element z pola previous splnena podmienka check_element
+    """
     new_element = random.randrange(min_value, max_value)
     while not check_element(new_element, previous):
         new_element += 1
@@ -75,6 +125,18 @@ def possible_new_element(min_value, max_value, previous):
 
 
 def squares(t, x, y, width, height, x_coordinates, y_coordinates):
+    """
+    Funkcia vykresli na ciarach stvorceky, ale tak, aby mali od seba a od krizovatiek vzdialenost aspon LINE_WIDTH,
+    co prakticky znamen, ze takmer vsetky vzdialenosti medzi susednymi budu LINE_WIDTH
+
+    :param t: korytnacka
+    :param x: x-ova suradnica lavej strany obrazku
+    :param y: y-ova suradnica spodnej strany obrazku
+    :param width: sirka obrazku
+    :param height: vyska obrazku
+    :param x_coordinates: horizontalne ciary
+    :param y_coordinates: vertikalne ciary
+    """
     start = random.randrange(y, y + LINE_WIDTH)
     # squares on vertical
     for rect_x in x_coordinates:
@@ -99,6 +161,16 @@ def squares(t, x, y, width, height, x_coordinates, y_coordinates):
 
 
 def line_mondrian(t, width, height, x, y, rows_num, columns_num):
+    """
+    Funkcia ktora vygeneruje obrazok inspirovany podla Mondrianovho diela Broadway Boogie Woogie
+    :param t: Korytnacka
+    :param width: sirka obrazka
+    :param height: vyska obrazka
+    :param x: x-ova suradnica lavej strany obrazku
+    :param y: y-ova suradnica spodnej strany obrazku
+    :param rows_num: pocet horizontalnych ciest
+    :param columns_num: pocet vertikalncyh ciest
+    """
     t.width(1)
     x_coordinates = []
     y_coordinates = []

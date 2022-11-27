@@ -5,6 +5,17 @@ WHITE_TO_COLOR_RATIO = 3
 
 
 def grid_mondrian(t, width, height, x, y, rows_num, columns_num):
+    """
+    Funkcia na vygenerovanie obrazku podobneho Mondrianovmu obrazu Tableau, pricom je vcely vlozeny do istej mriezky.
+
+    :param t: Kortnacka
+    :param width: Sirka obrazku, ktory ma byt vygenerovany
+    :param height: Vyska obrazku, ktory ma byt vygenerovany
+    :param x: x-ova suradnica laveho okraja obrazku
+    :param y: y-ova suradnica doleno okraja obrazku
+    :param rows_num: pocet horizontalnych ciar okrem prvej a poslednej
+    :param columns_num: pocet vertikalnych ciar okrem prvej a poslednej
+    """
     x_coordinates = [x, x + width]
     y_coordinates = [y, y + height]
     for _ in range(rows_num):
@@ -31,7 +42,3 @@ def grid_mondrian(t, width, height, x, y, rows_num, columns_num):
                 a = x_coordinates[index_x + 1] - x_coordinates[index_x]
                 b = y_coordinates[index_y + 1] - y_coordinates[index_y]
                 t.rectangle(b, a, mondrian_black(), mondrian_random())
-
-
-
-

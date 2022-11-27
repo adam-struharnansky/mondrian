@@ -8,7 +8,20 @@ WHITE_TO_COLOR_RATIO = 3
 FILL_STOP_RATIO = 0.5
 STOP_RATIO = 0.7
 
+
 def recursive_mondrian(t, width, height, x, y):
+    """
+    Jednoducha funkcia ktore rekurzivne vygeneruje obraz poodbny Mondrianovmu dielu Tableau. Funguje tak, ze vstupny
+    obdlznik vyfarbi, potom ho rozdeli, a na obe casti zavola rekurzivne seba. Skonci, ak niektori z rozmerov bude
+    mensi, ako MIN_SIZE
+    JE POTREBNE NASTAVIT tracer(1)!
+
+    :param t: korytnacka
+    :param width: sirka obrazku
+    :param height: vyska obrazku
+    :param x: x-ova suradnica lavej strany obrazku
+    :param y: y-ova suradnica spodnej strany obrazku
+    """
     t.jump_to(x, y)
     t.setheading(90)
     if rr(0, WHITE_TO_COLOR_RATIO):
@@ -30,10 +43,29 @@ def recursive_mondrian(t, width, height, x, y):
 
 
 def random_bool(true_ratio):
+    """
+    Funkcia vracia nahodny bool
+
+    :param true_ratio: pravdepodobnost, ze funkcia vrati True
+    :return: nahodne True alebo False distribuovane podla true_ratio
+    """
     return random.uniform(0, 1) < true_ratio
 
 
 def recursive_mondrian_filling(t, width, height, x, y, fill):
+    """
+    Funkcia ktora rekurzivne vygeneruje obraz poodbny Mondrianovmu dielu Tableau. Funguje tak, ze vstupny
+    obdlznik vyfarbi, potom ho rozdeli, a na obe casti zavola rekurzivne seba. Skonci, ak niektori z rozmerov bude
+    mensi, ako MIN_SIZE. Moze sa rozhodnut, a zakazat rekurzivnym volaniam prefarbovat pod-obldzniky
+    JE POTREBNE NASTAVIT tracer(1)!
+
+    :param t: korytnacka
+    :param width: sirka obrazku
+    :param height: vyska obrazku
+    :param x: x-ova suradnica lavej strany obrazku
+    :param y: y-ova suradnica spodnej strany obrazku
+    :param fill: to, ci moze prefarbit dany obdlznik, alebo iba ho rozdelit
+    """
     t.jump_to(x, y)
     t.setheading(90)
     new_fill = fill
@@ -65,6 +97,20 @@ def recursive_mondrian_filling(t, width, height, x, y, fill):
 
 
 def recursive_mondrian_stop(t, width, height, x, y, fill):
+    """
+    Funkcia ktora rekurzivne vygeneruje obraz poodbny Mondrianovmu dielu Tableau. Funguje tak, ze vstupny
+    obdlznik vyfarbi, potom ho rozdeli, a na obe casti zavola rekurzivne seba. Skonci, ak niektori z rozmerov bude
+    mensi, ako MIN_SIZE. Moze sa rozhodnut, a zakazat rekurzivnym volaniam prefarbovat pod-obldzniky. Tiez moze nahodne
+    nezavolat niektoru z prislusnych rekurzivnych funkcii (a teda moze generovat aj celkom velke jednofarbne plochy).
+    JE POTREBNE NASTAVIT tracer(1)!
+
+    :param t: korytnacka
+    :param width: sirka obrazku
+    :param height: vyska obrazku
+    :param x: x-ova suradnica lavej strany obrazku
+    :param y: y-ova suradnica spodnej strany obrazku
+    :param fill: to, ci moze prefarbit dany obdlznik, alebo iba ho rozdelit
+    """
     t.jump_to(x, y)
     t.setheading(90)
     new_fill = fill
