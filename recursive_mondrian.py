@@ -1,3 +1,5 @@
+import math
+
 from mondrian_color import *
 import random
 
@@ -93,3 +95,15 @@ def advanced_chunk_mondrian(t, a, b, x, y, depth=4, counter=0):
         advanced_chunk_mondrian(t, a - newA, newB, x, y + newA, depth, counter + 1)
     else:
         t.rectangle(a, b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
+
+
+def diamond_mondrian(t, a, b, x, y, depth=4, width=14):
+    t.width(width)
+    advanced_chunk_mondrian(t, a, b, x, y, depth=depth)
+    t.jump_to((x + b/2), y)
+    t.setheading(90)
+    t.rt(45)
+    for i in range(4):
+        t.rectangle(a, b, 'white', 'white')
+        t.jump_fd(math.sqrt((a/2) ** 2 + (b/2) ** 2))
+        t.lt(90)

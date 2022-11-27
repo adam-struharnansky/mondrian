@@ -33,3 +33,19 @@ def mondrian_random_and_white():
 def mondrian_random_all():
     return [mondrian_yellow(), mondrian_white(), mondrian_blue(), mondrian_red(), mondrian_black()][
         random.randrange(0, 5)]
+
+
+def checkerboard_orange():
+    return MyColor(232, 67, 3)
+
+
+def checkerboard_pink():
+    return MyColor(225, 37, 81)
+
+
+def checkerboard_blue():
+    return MyColor(0, 97, 191)
+
+
+def checkerboard_random():
+    return [checkerboard_blue(), checkerboard_pink(), checkerboard_orange()][random.randrange(0, 3)]
