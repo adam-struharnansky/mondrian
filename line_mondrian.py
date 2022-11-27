@@ -15,6 +15,7 @@ def crossroads(t, x_coordinates, y_coordinates):
             color = mondrian_random_and_white()
             centred_square(t, x, y, LINE_WIDTH, color, color)
 
+
 def rectangles(t, x_coordinates, y_coordinates):
     for _ in range(len(x_coordinates)):
         x_str = random.randrange(1, len(x_coordinates) - 1)
@@ -98,6 +99,7 @@ def squares(t, x, y, width, height, x_coordinates, y_coordinates):
 
 
 def line_mondrian(t, width, height, x, y, rows_num, columns_num):
+    t.width(1)
     x_coordinates = []
     y_coordinates = []
     for _ in range(rows_num):
