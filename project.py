@@ -1,11 +1,5 @@
-import math
-import random
-
 from myTurtle_A import *
-from myColor import *
 import turtle
-
-from mondrian_color import *
 from recursive_mondrian import *
 from non_recursive_modrian import *
 from grid_mondrian import *
@@ -24,10 +18,9 @@ t.color(mondrian_black())
 # recursive_mondrian_filling(t, 400, 400, -200, -200, True)
 # grid_mondrian(t, 400, 400, -200, -200, 5, 5)
 # advanced_chunk_mondrian(t, 600, 600, -300, -300, depth=4)
-# line_mondrian(t, 300, 300, -150, -150, 2, 1)
-# diamond_mondrian(t, 600, 600, -300, -300, depth=6, width=10)
-# checkerboard(t, 20, 19, 40)
+# line_mondrian(t, 300, 300, -150, -150, 3, 3)
+# diamond_mondrian(t, 600, -300, -300, depth=6, width=10)
+# checkerboard(t, 18, 14, 40)
 # new_york_city(t, 600, 600, -300, -300, 10, 9)
-
 
 turtle.done()

@@ -145,15 +145,29 @@ def recursive_mondrian_stop(t, width, height, x, y, fill):
             recursive_mondrian_stop(t, width, height - b, x, y + b, new_fill)
 
 
-def advanced_chunk_mondrian(t, a, b, x, y, depth=4, counter=0):
-    MIN_SIZE = 30
+def advanced_chunk_mondrian(t, height, width, x, y, depth=4, counter=0):
+    """
+    Rekurzivna funkcia generujuca vzor podobny dielu Tableau. Funkcia rozdeluje
+    zakladny utvar na 4 casti a nasledne sa na kazdy rekurzivne zavola a proces sa
+    opakuje.
+
+    :param t: Korytnacka
+    :param height: Vyska obrazka
+    :param width: Sirka obrazka
+    :param x: x-ova suradnica laveho dolneho rohu
+    :param y: y-ova suradnica laveho dolneho rohu
+    :param depth: Maximalna hlbka recenzie
+    :param counter: Pocitadlo aktualnej hlbky recenzie
+    :return: None
+    """
+    min_size = 30
     if counter == depth:
         return
 
     t.jump_to(x, y)
 
-    if a - MIN_SIZE < MIN_SIZE or b - MIN_SIZE < MIN_SIZE:
-        t.rectangle(a, b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
+    if height - min_size < min_size or width - min_size < min_size:
+        t.rectangle(height, width, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
         return
 
     r = random.randint(0, 2)
@@ -161,30 +175,42 @@ def advanced_chunk_mondrian(t, a, b, x, y, depth=4, counter=0):
         r = 0
 
     if r != 1:
-        t.rectangle(a, b, mondrian_black(), mondrian_white())
-        newA = random.randint(MIN_SIZE, a - MIN_SIZE)
-        newB = random.randint(MIN_SIZE, b - MIN_SIZE)
+        t.rectangle(height, width, mondrian_black(), mondrian_white())
+        new_a = random.randint(min_size, height - min_size)
+        new_b = random.randint(min_size, width - min_size)
 
-        if newA + int(newB/2) < newB:
-            newB -= int(newB/2)
-        elif newB + int(newA/2) < newA:
-            newA -= int(newA/2)
+        if new_a + int(new_b/2) < new_b:
+            new_b -= int(new_b/2)
+        elif new_b + int(new_a/2) < new_a:
+            new_a -= int(new_a/2)
 
-        advanced_chunk_mondrian(t, newA, newB, x, y, depth, counter + 1)
-        advanced_chunk_mondrian(t, newA, b - newB, x + newB, y, depth, counter + 1)
-        advanced_chunk_mondrian(t, a - newA, b - newB, x + newB, y + newA, depth, counter + 1)
-        advanced_chunk_mondrian(t, a - newA, newB, x, y + newA, depth, counter + 1)
+        advanced_chunk_mondrian(t, new_a, new_b, x, y, depth, counter + 1)
+        advanced_chunk_mondrian(t, new_a, width - new_b, x + new_b, y, depth, counter + 1)
+        advanced_chunk_mondrian(t, height - new_a, width - new_b, x + new_b, y + new_a, depth, counter + 1)
+        advanced_chunk_mondrian(t, height - new_a, new_b, x, y + new_a, depth, counter + 1)
     else:
-        t.rectangle(a, b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
+        t.rectangle(height, width, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
 
 
-def diamond_mondrian(t, a, b, x, y, depth=4, width=14):
+def diamond_mondrian(t, side, x, y, depth=4, width=14):
+    """
+    Funkcia vyuzivajuca rekurzivnu metodu advanced_chunk_mondrian, ktorej
+    vysledok nasledne oreze tak aby bol v tvare kosostvorca.
+
+    :param t: Korytnacka
+    :param side: Dlzka strany stvorca
+    :param x: x-ova suradnica laveho dolneho rohu
+    :param y: y-ova suradnica laveho dolneho rohu
+    :param depth: Maximalna hlbka rekurzie
+    :param width: Sirka ciary pri vykreslovani
+    :return: None
+    """
     t.width(width)
-    advanced_chunk_mondrian(t, a, b, x, y, depth=depth)
-    t.jump_to((x + b/2), y)
+    advanced_chunk_mondrian(t, side, side, x, y, depth=depth)
+    t.jump_to((x + side/2), y)
     t.setheading(90)
     t.rt(45)
     for i in range(4):
-        t.rectangle(a, b, 'white', 'white')
-        t.jump_fd(math.sqrt((a/2) ** 2 + (b/2) ** 2))
+        t.rectangle(side, side, 'white', 'white')
+        t.jump_fd(math.sqrt((side/2) ** 2 + (side/2) ** 2))
         t.lt(90)

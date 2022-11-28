@@ -1,10 +1,18 @@
-import random
 from mondrian_color import *
 
 MIN_SIZE = 20
 
 
-def generate_square(t, width, height, x, y):
+def generate_square(t, width, height):
+    """
+    Podporna funkcia pre metodu for_mondrian, ktora vygeneruje
+    styri utvary v zadanej oblasti.
+
+    :param t: Korytnacka
+    :param width: Sirka danej oblasti
+    :param height: Vyska danej oblasti
+    :return: None
+    """
     if random.randint(0, 2) == 1:
         t.rectangle(width, height, 'black', mondrian_random())
     else:
@@ -14,55 +22,101 @@ def generate_square(t, width, height, x, y):
         t.jump_by(b, 0)
         t.rectangle(a, height - b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
         t.jump_by(0, a)
-        t.rectangle(width - a, height - b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
+        t.rectangle(width - a, height - b, mondrian_black(),
+                    [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
         t.jump_by(-b, 0)
         t.rectangle(width - a, b, mondrian_black(), [mondrian_random(), mondrian_white()][random.randrange(0, 2)])
 
 
 def for_mondrian(t, width, height, x, y):
+    """
+    Jednoducha nerekurzivna funkcia generujuca vzor podobny dielu
+    Tableau.
+
+    :param t: Korytnacka
+    :param width: Sirka obrazku
+    :param height: Vyska obrazku
+    :param x: x-ova suradnica laveho dolneho rohu
+    :param y: y-ova suradnica laveho dolneho rohu
+    :return: None
+    """
     t.jump_to(x, y)
     t.rectangle(width, height, mondrian_black(), mondrian_white())
-    generate_square(t, width / 2, height / 2, x, y)
+    generate_square(t, width / 2, height / 2)
     t.jump_to(x + width / 2, y)
-    generate_square(t,  width / 2, height / 2, x + width / 2, y)
+    generate_square(t,  width / 2, height / 2)
     t.jump_to(x + width / 2, y + height / 2)
-    generate_square(t,  width / 2, height / 2, x + width / 2, y + height / 2)
+    generate_square(t,  width / 2, height / 2)
     t.jump_to(x, y + height / 2)
-    generate_square(t,  width / 2, height / 2, x, y + height / 2)
+    generate_square(t,  width / 2, height / 2)
 
 
-def checkerboard(t, a, b, size):
+def checkerboard(t, num_of_columns, num_of_rows, size):
+    """
+    Metoda generujuca mozaiku podobnu dielu Checkerboard.
+
+    :param t: Korytnacka
+    :param num_of_columns: Pocet stlpcov mozaiky
+    :param num_of_rows: Pocet riadkov mozaiky
+    :param size: Velkost strany jedneho stvorceka
+    :return: None
+    """
     t.width(2)
-    x, y = -((a * size) / 2), -((b * size) / 2)
+    x, y = -((num_of_columns * size) / 2), -((num_of_rows * size) / 2)
     t.jump_to(x, y)
-    for i in range(a):
+    for i in range(num_of_columns):
         pos = t.pos()
-        for j in range(b):
+        for j in range(num_of_rows):
             t.rectangle(size, size, 'black', checkerboard_random())
             t.jump_to(t.xcor(), t.ycor() + size)
         t.jump_to(pos)
         t.jump_by(size, 0)
 
 
-def overlap(mode, y, rows, columns, c_x, c_y, w, h) -> bool:
-    isOverlaping = False
+def overlap(mode, coordinate, rows: list, columns: list, c_x, c_y, w, h) -> bool:
+    """
+    Podporna funkcia pre metodu new_york_city, ktora kontroluje
+    prekryvy medzi ciarou, ktora sa ma vygenerovat a tymi, ktore
+    sa uz vygenerovali.
+
+    :param mode: 0 - pre kontrolu novej ciary v riadku, 1 - pre kontrolu novej ciary v stlpci
+    :param coordinate: Koordinat x alebo y ciary, ktoru chceme vygenerovat v zavislosti od zvoleneho modu
+    :param rows: Zoznam y-ovych suradnic uz vygenerovanych ciar
+    :param columns: Zoznam x-ovych suradnic uz vygenerovanych ciar
+    :param c_x: x-ova suradnica laveho dolneho rohu
+    :param c_y: y-ova suradnica laveho dolneho rohu
+    :param w: Sirka obrazka
+    :param h: Vyska obrazka
+    :return: True alebo False podla toho ci by sa planovana ciara prekryvala s niektorou uz vygenerovanou alebo nie
+    """
+    is_overlaping = False
     if mode == 0:
         for i in rows:
-            if i - 20 < y < i + 20:
-                isOverlaping = True
-        if c_y + h < y + 20 or c_y > y - 20:
-            isOverlaping = True
+            if i - 20 < coordinate < i + 20:
+                is_overlaping = True
+        if c_y + h < coordinate + 20 or c_y > coordinate - 20:
+            is_overlaping = True
 
     if mode == 1:
         for i in columns:
-            if i - 20 < y < i + 20:
-                isOverlaping = True
-        if y - 20 < c_x or y + 20 > c_x + w:
-            isOverlaping = True
-    return isOverlaping
+            if i - 20 < coordinate < i + 20:
+                is_overlaping = True
+        if coordinate - 20 < c_x or coordinate + 20 > c_x + w:
+            is_overlaping = True
+    return is_overlaping
 
 
 def crop_new_york(t, width, height, x, y):
+    """
+    Podporna funkcia pre metodu new_york_city, ktora oreze konce ciar tak aby neboli zaoblene
+
+    :param t: Korytnacka
+    :param width: Sirka obrazka
+    :param height: Vyska obrazka
+    :param x: x-ova suradnica laveho dolneho rohu
+    :param y: y-ove suradnica laveho dolneho rohu
+    :return: None
+    """
     t.jump_to(x, y)
     t.setheading(0)
     for i in range(4):
@@ -76,6 +130,18 @@ def crop_new_york(t, width, height, x, y):
 
 
 def new_york_city(t, width, height, x, y, num_rows, num_columns):
+    """
+    Metoda generujuca obrazok podobny dielu New York City.
+
+    :param t: Korytnacka
+    :param width: Sirka obrazka
+    :param height: Vyska obrazka
+    :param x: x-ova suradnica laveho dolneho rohu
+    :param y: y-ova suradnica laveho dolneho rohu
+    :param num_rows: Pocet riadkov
+    :param num_columns: Pocet stlpcov
+    :return: None
+    """
     t.width(10)
     rows = []
     columns = []
@@ -84,11 +150,11 @@ def new_york_city(t, width, height, x, y, num_rows, num_columns):
         if ri(0, 1) == 0 and num_rows != 0:
             t.jump_to(x, y)
             t.setheading(0)
-            newY = ri(y, y + height)
-            while overlap(0, newY, rows, [], x, y, width, height):
-                newY = ri(y, y + height)
-            rows.append(newY)
-            t.jump_to(x, newY)
+            new_y = ri(y, y + height)
+            while overlap(0, new_y, rows, [], x, y, width, height):
+                new_y = ri(y, y + height)
+            rows.append(new_y)
+            t.jump_to(x, new_y)
             t.color(mondrian_random())
             t.fd(width)
             t.jump_to(x, y)
@@ -96,11 +162,11 @@ def new_york_city(t, width, height, x, y, num_rows, num_columns):
         elif num_columns != 0:
             t.jump_to(x, y)
             t.setheading(90)
-            newX = ri(x, x + width)
-            while overlap(1, newX, [], columns, x, y, width, height):
-                newX = ri(x, x + width)
-            columns.append(newX)
-            t.jump_to(newX, y)
+            new_x = ri(x, x + width)
+            while overlap(1, new_x, [], columns, x, y, width, height):
+                new_x = ri(x, x + width)
+            columns.append(new_x)
+            t.jump_to(new_x, y)
             t.color(mondrian_random())
             t.fd(height)
             t.jump_to(x, y)
